@@ -23,7 +23,7 @@ import SubdirectoryArrowLeftIcon from "@mui/icons-material/SubdirectoryArrowLeft
 // import CommentIcon from "@mui/icons-material/Comment";
 import ExpandLess from "@mui/icons-material/ExpandLess";
 import ExpandMore from "@mui/icons-material/ExpandMore";
-import { Dispatch, useState } from "react";
+import { Dispatch, useEffect, useState } from "react";
 import { Group, Item } from "../data";
 import {
   does_array_contains_array,
@@ -43,6 +43,8 @@ type Props = {
   // setCheckItemGroups: Dispatch<React.SetStateAction<CheckItemsGroupType[]>>;
   items: Item[];
   groups: Group[];
+  reset: boolean;
+  setReset: Dispatch<React.SetStateAction<boolean>>;
 };
 
 const Right = ({
@@ -53,6 +55,8 @@ const Right = ({
   // setCheckItemGroups,
   items,
   groups,
+  reset,
+  setReset,
 }: Props) => {
   const [collapseGroupIds, setCollapseGroupIds] = useState<string[]>([]);
   const [allGroupsSelectedIds, setAllgroupsSelectedIds] = useState<string[]>(
@@ -101,6 +105,13 @@ const Right = ({
   const handleModeChange = (_, mode: "add" | "delete") => {
     setSelectMode(mode);
   };
+
+  useEffect(() => {
+    if (reset) {
+      setAllgroupsSelectedIds([]);
+      setReset(false);
+    }
+  }, [reset, setReset]);
 
   return (
     <Card

@@ -34,6 +34,8 @@ const App = () => {
     }
   };
 
+  const [reset, setReset] = useState(false);
+
   // Finalll
   const createGroup = () => {
     const g: Group = {
@@ -41,6 +43,7 @@ const App = () => {
       name: newGroupName,
       children: [...checkedArr],
     };
+    setReset(true);
 
     setGroups([...groups, g]);
   };
@@ -68,6 +71,8 @@ const App = () => {
         />
         {/* Right */}
         <Right
+          reset={reset}
+          setReset={setReset}
           items={items}
           groups={groups}
           makeChange={makeChange}
