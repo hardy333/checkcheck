@@ -6,12 +6,14 @@ import {
   Checkbox,
   Collapse,
   List,
+  ListItem,
   ListItemButton,
   ListItemIcon,
   ListItemText,
   Stack,
   Tab,
   Tabs,
+  Typography,
 } from "@mui/material";
 
 // import InboxIcon from "@mui/icons-material/MoveToInbox";
@@ -57,7 +59,10 @@ const Right = ({
     []
   );
 
+  const groupCollapse = true;
+
   const handleGroupCollapse = (groupId: string) => {
+    if (!groupCollapse) return false;
     if (collapseGroupIds.includes(groupId)) {
       setCollapseGroupIds(collapseGroupIds.filter((id) => id !== groupId));
     } else {
@@ -93,8 +98,6 @@ const Right = ({
     }
   };
 
-  console.log("ggg", allGroupsSelectedIds);
-
   const handleModeChange = (_, mode: "add" | "delete") => {
     setSelectMode(mode);
   };
@@ -110,7 +113,8 @@ const Right = ({
       }}
       variant="outlined"
     >
-      <CardContent>
+      <CardContent sx={{ pt: 1 }}>
+        <Typography variant="caption">Choose from groups</Typography>
         <Stack direction={"row"}>
           <Tabs
             value={selectMode}
@@ -241,6 +245,38 @@ const Right = ({
               </List>
             );
           })}
+
+          <Box sx={{}}>
+            <Typography variant="caption">All Selected items</Typography>
+            <List>
+              {allGroupsSelectedIds.map((itemId) => {
+                return (
+                  <ListItem key={itemId} disablePadding>
+                    <ListItemButton
+                      role="button"
+                      onClick={() => {
+                        setAllgroupsSelectedIds(
+                          allGroupsSelectedIds.filter((id) => id != itemId)
+                        );
+                      }}
+                    >
+                      <ListItemIcon>
+                        <Checkbox
+                          edge="end"
+                          checked={true}
+                          tabIndex={-1}
+                          disableRipple
+                        />
+                      </ListItemIcon>
+                      <ListItemText
+                        primary={items.find((item) => item.id === itemId)?.name}
+                      />
+                    </ListItemButton>
+                  </ListItem>
+                );
+              })}
+            </List>
+          </Box>
         </Stack>
 
         <Stack justifyContent={"center"} mt={2}>
