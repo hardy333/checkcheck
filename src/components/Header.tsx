@@ -1,15 +1,30 @@
 import { Box, Button, TextField, Typography } from "@mui/material";
 import CenterFocusWeakIcon from "@mui/icons-material/CenterFocusWeak";
-import { useState } from "react";
-const Header = () => {
-  const [name, setname] = useState("");
+import { Dispatch, useState } from "react";
+type Props = {
+  newGroupName: string;
+  setNewGroupName: Dispatch<React.SetStateAction<string>>;
+  createGroup: () => void;
+  disableCreateButton: boolean;
+};
+
+const Header = ({
+  newGroupName,
+  setNewGroupName,
+  createGroup,
+  disableCreateButton,
+}: Props) => {
   const [error, setError] = useState("");
 
   const handleSubmit = () => {
-    if (name === "") {
+    if (newGroupName === "") {
       setError("Please enter group name");
+    } else {
+      createGroup();
     }
   };
+
+  console.log(disableCreateButton);
 
   return (
     <Box
@@ -28,8 +43,8 @@ const Header = () => {
       <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
         <TextField
           label="New Group Name"
-          value={name}
-          onChange={(e) => setname(e.target.value)}
+          value={newGroupName}
+          onChange={(e) => setNewGroupName(e.target.value)}
           sx={{
             minHeight: "100%",
             maxHeight: "200px",
@@ -49,6 +64,7 @@ const Header = () => {
           }}
         />
         <Button
+          disabled={disableCreateButton}
           onClick={handleSubmit}
           endIcon={<CenterFocusWeakIcon />}
           size="large"

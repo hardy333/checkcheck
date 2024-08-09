@@ -1,9 +1,10 @@
 import { Box, Container } from "@mui/material";
 import { useState } from "react";
-import { groups } from "./data";
+import { Group, groups as initGroups, items as initItems } from "./data";
 import Header from "./components/Header";
 import Left from "./components/Left";
 import Right from "./components/Right";
+import { nanoid } from "nanoid";
 
 export type CheckItemsGroupType = {
   groupId: string;
@@ -12,6 +13,10 @@ export type CheckItemsGroupType = {
 }[];
 
 const App = () => {
+  const [items, setItms] = useState(initItems);
+  const [groups, setGroups] = useState(initGroups);
+  const [newGroupName, setNewGroupName] = useState("");
+
   // Left Side Logic Start
   // Left Side Logic Start
   const [checkedArr, setCheckedArr] = useState<string[]>([]);
@@ -76,9 +81,23 @@ const App = () => {
   };
   /*  Make Changes in group */
 
+  const createGroup = () => {
+    const g: Group = {
+      id: nanoid(),
+      name: newGroupName,
+      children: [...checkedArr],
+    };
+    console.log(g);
+  };
+
   return (
     <Container sx={{ pb: 2 }}>
-      <Header />
+      <Header
+        disableCreateButton={checkedArr.length === 0}
+        newGroupName={newGroupName}
+        setNewGroupName={setNewGroupName}
+        createGroup={createGroup}
+      />
       <Box
         sx={{
           display: "flex",
@@ -87,9 +106,15 @@ const App = () => {
         }}
       >
         {/* Left */}
-        <Left checkedArr={checkedArr} setCheckedArr={setCheckedArr} />
+        <Left
+          items={items}
+          checkedArr={checkedArr}
+          setCheckedArr={setCheckedArr}
+        />
         {/* Right */}
         <Right
+          items={items}
+          groups={groups}
           checkItemGroups={checkItemGroups}
           makeChange={makeChange}
           selectMode={selectMode}

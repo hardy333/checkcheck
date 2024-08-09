@@ -12,7 +12,6 @@ import {
   Stack,
   Tab,
   Tabs,
-  Typography,
 } from "@mui/material";
 
 // import InboxIcon from "@mui/icons-material/MoveToInbox";
@@ -22,9 +21,9 @@ import SubdirectoryArrowLeftIcon from "@mui/icons-material/SubdirectoryArrowLeft
 // import CommentIcon from "@mui/icons-material/Comment";
 import ExpandLess from "@mui/icons-material/ExpandLess";
 import ExpandMore from "@mui/icons-material/ExpandMore";
-import { groups, items } from "../data";
 import { Dispatch, useState } from "react";
 import { CheckItemsGroupType } from "../App";
+import { Group, Item } from "../data";
 
 type Props = {
   selectMode: "add" | "delete";
@@ -36,6 +35,8 @@ type Props = {
     isSelectAll: boolean;
   }[];
   setCheckItemGroups: Dispatch<React.SetStateAction<CheckItemsGroupType>>;
+  items: Item[];
+  groups: Group[];
 };
 
 const Right = ({
@@ -44,6 +45,8 @@ const Right = ({
   makeChange,
   checkItemGroups,
   setCheckItemGroups,
+  items,
+  groups,
 }: Props) => {
   const [collapseGroupIds, setCollapseGroupIds] = useState<string[]>([]);
 

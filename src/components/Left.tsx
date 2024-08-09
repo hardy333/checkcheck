@@ -11,15 +11,16 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
-import { Item, items } from "../data";
+import { Item } from "../data";
 import { Dispatch, useState } from "react";
 
 type Props = {
   checkedArr: string[];
   setCheckedArr: Dispatch<React.SetStateAction<string[]>>;
+  items: Item[];
 };
 
-const Left = ({ checkedArr, setCheckedArr }: Props) => {
+const Left = ({ checkedArr, setCheckedArr, items }: Props) => {
   const [isSelectAll, setIsSelectAll] = useState(false);
 
   const handleToggle = (item: Item) => () => {

@@ -20,7 +20,7 @@ import { Dispatch, useState } from "react";
 type Props = {
   checkedArr: string[];
   setCheckedArr: Dispatch<React.SetStateAction<string[]>>;
-  items: string[];
+  items: Item[];
 };
 
 const CheckboxList = ({ checkedArr, setCheckedArr, items }: Props) => {
