@@ -1,5 +1,5 @@
 import { Box, Container } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Group, groups as initGroups, items as initItems } from "./data";
 import Header from "./components/Header";
 import Left from "./components/Left";
@@ -87,8 +87,21 @@ const App = () => {
       name: newGroupName,
       children: [...checkedArr],
     };
-    console.log(g);
+
+    setGroups([...groups, g]);
   };
+
+  console.log(groups);
+
+  useEffect(() => {
+    setCheckItemGroups(() => {
+      return groups.map((g) => ({
+        groupId: g.id,
+        checkedChildrenIds: [],
+        isSelectAll: false,
+      }));
+    });
+  }, [groups]);
 
   return (
     <Container sx={{ pb: 2 }}>

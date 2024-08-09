@@ -123,6 +123,9 @@ const Right = ({
       );
     }
   };
+
+  console.log("ggg", groups);
+
   const handleModeChange = (_, mode: "add" | "delete") => {
     setSelectMode(mode);
   };
