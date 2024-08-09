@@ -63,7 +63,7 @@ const Right = ({
     []
   );
 
-  const groupCollapse = true;
+  const groupCollapse = false;
 
   const handleGroupCollapse = (groupId: string) => {
     if (!groupCollapse) return false;
@@ -197,16 +197,16 @@ const Right = ({
                   <ListItemButton
                     sx={{
                       display: "flex",
-                      justifyContent: "start",
+                      // cursor: "default",
+                      // justifyContent: "start",
+                      // "&:hover": {
+                      //   bgcolor: "white",
+                      // },
                     }}
-                    onClick={() => handleGroupCollapse(group.id)}
+                    disableRipple
+                    onClick={() => handleGroupTopCheckboxChange(group.id)}
                   >
                     <ListItemText primary={group.name} />
-                    {collapseGroupIds.includes(group.id) ? (
-                      <ExpandLess />
-                    ) : (
-                      <ExpandMore />
-                    )}
                   </ListItemButton>
                 </Box>
 
@@ -256,38 +256,6 @@ const Right = ({
               </List>
             );
           })}
-
-          <Box sx={{}}>
-            <Typography variant="caption">All Selected items</Typography>
-            <List>
-              {allGroupsSelectedIds.map((itemId) => {
-                return (
-                  <ListItem key={itemId} disablePadding>
-                    <ListItemButton
-                      role="button"
-                      onClick={() => {
-                        setAllgroupsSelectedIds(
-                          allGroupsSelectedIds.filter((id) => id != itemId)
-                        );
-                      }}
-                    >
-                      <ListItemIcon>
-                        <Checkbox
-                          edge="end"
-                          checked={true}
-                          tabIndex={-1}
-                          disableRipple
-                        />
-                      </ListItemIcon>
-                      <ListItemText
-                        primary={items.find((item) => item.id === itemId)?.name}
-                      />
-                    </ListItemButton>
-                  </ListItem>
-                );
-              })}
-            </List>
-          </Box>
         </Stack>
 
         <Stack justifyContent={"center"} mt={2}>

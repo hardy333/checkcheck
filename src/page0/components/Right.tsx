@@ -74,7 +74,7 @@ const Right = ({
     }
   };
 
-  const handleGroupCheckboxChange = (itemId: string) => {
+  const handleGroupCheckboxChange = (groupId: string, itemId: string) => {
     const alreadyChecked = allGroupsSelectedIds.includes(itemId);
     if (alreadyChecked) {
       setAllgroupsSelectedIds(
@@ -256,41 +256,6 @@ const Right = ({
               </List>
             );
           })}
-
-          <Box sx={{}}>
-            <Typography variant="caption">All Selected items</Typography>
-            <List>
-              {[
-                ...allGroupsSelectedIds,
-                ...items
-                  .filter((item) => !allGroupsSelectedIds.includes(item.id))
-                  .map((i) => i.id),
-              ].map((id) => {
-                return (
-                  <ListItem key={id} disablePadding>
-                    <ListItemButton
-                      role="button"
-                      onClick={() => {
-                        handleGroupCheckboxChange(id);
-                      }}
-                    >
-                      <ListItemIcon>
-                        <Checkbox
-                          edge="end"
-                          checked={allGroupsSelectedIds.includes(id)}
-                          tabIndex={-1}
-                          disableRipple
-                        />
-                      </ListItemIcon>
-                      <ListItemText
-                        primary={items.find((i) => i.id === id)?.name}
-                      />
-                    </ListItemButton>
-                  </ListItem>
-                );
-              })}
-            </List>
-          </Box>
         </Stack>
 
         <Stack justifyContent={"center"} mt={2}>

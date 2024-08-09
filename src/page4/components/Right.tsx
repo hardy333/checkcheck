@@ -63,7 +63,7 @@ const Right = ({
     []
   );
 
-  const groupCollapse = true;
+  const groupCollapse = false;
 
   const handleGroupCollapse = (groupId: string) => {
     if (!groupCollapse) return false;
@@ -197,16 +197,16 @@ const Right = ({
                   <ListItemButton
                     sx={{
                       display: "flex",
-                      justifyContent: "start",
+                      // cursor: "default",
+                      // justifyContent: "start",
+                      // "&:hover": {
+                      //   bgcolor: "white",
+                      // },
                     }}
-                    onClick={() => handleGroupCollapse(group.id)}
+                    disableRipple
+                    onClick={() => handleGroupTopCheckboxChange(group.id)}
                   >
                     <ListItemText primary={group.name} />
-                    {collapseGroupIds.includes(group.id) ? (
-                      <ExpandLess />
-                    ) : (
-                      <ExpandMore />
-                    )}
                   </ListItemButton>
                 </Box>
 
@@ -256,7 +256,6 @@ const Right = ({
               </List>
             );
           })}
-
           <Box sx={{}}>
             <Typography variant="caption">All Selected items</Typography>
             <List>
@@ -270,6 +269,11 @@ const Right = ({
                   <ListItem key={id} disablePadding>
                     <ListItemButton
                       role="button"
+                      // onClick={() => {
+                      //   setAllgroupsSelectedIds(
+                      //     allGroupsSelectedIds.filter((id) => id != itemId)
+                      //   );
+                      // }}
                       onClick={() => {
                         handleGroupCheckboxChange(id);
                       }}
