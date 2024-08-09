@@ -90,6 +90,8 @@ const Right = ({
   };
 
   const handleModeChange = (x: unknown, mode: "add" | "delete") => {
+    console.log(x);
+
     setSelectMode(mode);
   };
 
