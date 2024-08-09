@@ -10,7 +10,7 @@ export type CheckItemsGroupType = {
   groupId: string;
   checkedChildrenIds: string[];
   isSelectAll: boolean;
-}[];
+};
 
 const App = () => {
   const [items, setItms] = useState(initItems);
@@ -25,7 +25,7 @@ const App = () => {
 
   // Right Side Logic Start
   // Right Side Logic Start
-  const [checkItemGroups, setCheckItemGroups] = useState<CheckItemsGroupType>(
+  const [checkItemGroups, setCheckItemGroups] = useState<CheckItemsGroupType[]>(
     () => {
       return groups.map((g) => ({
         groupId: g.id,

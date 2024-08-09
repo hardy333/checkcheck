@@ -21,7 +21,7 @@ import SubdirectoryArrowLeftIcon from "@mui/icons-material/SubdirectoryArrowLeft
 // import CommentIcon from "@mui/icons-material/Comment";
 import ExpandLess from "@mui/icons-material/ExpandLess";
 import ExpandMore from "@mui/icons-material/ExpandMore";
-import { Dispatch, useState } from "react";
+import { Dispatch, useEffect, useState } from "react";
 import { CheckItemsGroupType } from "../App";
 import { Group, Item } from "../data";
 
@@ -34,7 +34,7 @@ type Props = {
     checkedChildrenIds: string[];
     isSelectAll: boolean;
   }[];
-  setCheckItemGroups: Dispatch<React.SetStateAction<CheckItemsGroupType>>;
+  setCheckItemGroups: Dispatch<React.SetStateAction<CheckItemsGroupType[]>>;
   items: Item[];
   groups: Group[];
 };
@@ -49,6 +49,9 @@ const Right = ({
   groups,
 }: Props) => {
   const [collapseGroupIds, setCollapseGroupIds] = useState<string[]>([]);
+  const [allGroupsSelectedIds, setAllgroupsSelectedIds] = useState<string[]>(
+    []
+  );
 
   const handleGroupCollapse = (groupId: string) => {
     if (collapseGroupIds.includes(groupId)) {
@@ -90,9 +93,7 @@ const Right = ({
   };
 
   const handleGroupTopCheckboxChange = (groupId: string) => {
-    console.log(groupId);
     const g = checkItemGroups.find((g) => g.groupId === groupId);
-    console.log(g);
 
     if (g?.isSelectAll) {
       setCheckItemGroups(
@@ -124,7 +125,19 @@ const Right = ({
     }
   };
 
-  console.log("ggg", groups);
+  useEffect(() => {
+    const arr: string[] = [];
+
+    checkItemGroups.forEach((g) => {
+      g.checkedChildrenIds.forEach((id) => {
+        arr.push(id);
+      });
+    });
+
+    setAllgroupsSelectedIds(arr);
+  }, [checkItemGroups]);
+
+  console.log("ggg", allGroupsSelectedIds);
 
   const handleModeChange = (_, mode: "add" | "delete") => {
     setSelectMode(mode);
@@ -166,6 +179,14 @@ const Right = ({
           }}
         >
           {groups.map((group) => {
+            const currCheckedItemGroup = checkItemGroups.find(
+              (g) => g.groupId === group.id
+            ) as CheckItemsGroupType;
+
+            const isGroupSelectAll =
+              currCheckedItemGroup.checkedChildrenIds.length ===
+              group.children.length;
+
             return (
               <List
                 key={group.id}
@@ -185,10 +206,11 @@ const Right = ({
                   }}
                 >
                   <Checkbox
-                    checked={
-                      checkItemGroups.find((g) => g.groupId === group.id)
-                        ?.isSelectAll
+                    indeterminate={
+                      !isGroupSelectAll &&
+                      currCheckedItemGroup?.checkedChildrenIds.length > 0
                     }
+                    checked={isGroupSelectAll}
                     onChange={() => handleGroupTopCheckboxChange(group.id)}
                   />
                   <ListItemButton
