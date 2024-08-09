@@ -11,7 +11,8 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
-import { Item } from "../data";
+import { Item } from "../../data";
+
 import { Dispatch, useState } from "react";
 
 type Props = {

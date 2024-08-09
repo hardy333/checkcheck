@@ -102,7 +102,7 @@ const Right = ({
     }
   };
 
-  const handleModeChange = (_, mode: "add" | "delete") => {
+  const handleModeChange = (x: unknown, mode: "add" | "delete") => {
     setSelectMode(mode);
   };
 
@@ -230,9 +230,7 @@ const Right = ({
                       <List key={itemId} component="div" disablePadding>
                         <ListItemButton
                           sx={{ pl: 4 }}
-                          onClick={() =>
-                            handleGroupCheckboxChange(group.id, itemId)
-                          }
+                          onClick={() => handleGroupCheckboxChange(itemId)}
                         >
                           <ListItemIcon>
                             <Checkbox

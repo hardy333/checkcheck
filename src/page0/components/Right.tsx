@@ -6,7 +6,6 @@ import {
   Checkbox,
   Collapse,
   List,
-  ListItem,
   ListItemButton,
   ListItemIcon,
   ListItemText,
@@ -74,7 +73,7 @@ const Right = ({
     }
   };
 
-  const handleGroupCheckboxChange = (groupId: string, itemId: string) => {
+  const handleGroupCheckboxChange = (itemId: string) => {
     const alreadyChecked = allGroupsSelectedIds.includes(itemId);
     if (alreadyChecked) {
       setAllgroupsSelectedIds(
@@ -102,7 +101,8 @@ const Right = ({
     }
   };
 
-  const handleModeChange = (_, mode: "add" | "delete") => {
+  const handleModeChange = (x: unknown, mode: "add" | "delete") => {
+    console.log(x);
     setSelectMode(mode);
   };
 
@@ -230,9 +230,7 @@ const Right = ({
                       <List key={itemId} component="div" disablePadding>
                         <ListItemButton
                           sx={{ pl: 4 }}
-                          onClick={() =>
-                            handleGroupCheckboxChange(group.id, itemId)
-                          }
+                          onClick={() => handleGroupCheckboxChange(itemId)}
                         >
                           <ListItemIcon>
                             <Checkbox

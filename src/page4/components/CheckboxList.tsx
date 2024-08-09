@@ -13,7 +13,7 @@ import {
   Typography,
 } from "@mui/material";
 
-import { Item } from "../data";
+import { Item } from "../../data";
 
 import { Dispatch, useState } from "react";
 

@@ -6,7 +6,6 @@ import {
   Checkbox,
   Collapse,
   List,
-  ListItem,
   ListItemButton,
   ListItemIcon,
   ListItemText,
@@ -21,8 +20,6 @@ import {
 // import SendIcon from "@mui/icons-material/Send";
 import SubdirectoryArrowLeftIcon from "@mui/icons-material/SubdirectoryArrowLeft";
 // import CommentIcon from "@mui/icons-material/Comment";
-import ExpandLess from "@mui/icons-material/ExpandLess";
-import ExpandMore from "@mui/icons-material/ExpandMore";
 import { Dispatch, useEffect, useState } from "react";
 import { Group, Item } from "../../data";
 import {
@@ -58,23 +55,12 @@ const Right = ({
   reset,
   setReset,
 }: Props) => {
-  const [collapseGroupIds, setCollapseGroupIds] = useState<string[]>([]);
+  const [collapseGroupIds] = useState<string[]>([]);
   const [allGroupsSelectedIds, setAllgroupsSelectedIds] = useState<string[]>(
     []
   );
 
-  const groupCollapse = false;
-
-  const handleGroupCollapse = (groupId: string) => {
-    if (!groupCollapse) return false;
-    if (collapseGroupIds.includes(groupId)) {
-      setCollapseGroupIds(collapseGroupIds.filter((id) => id !== groupId));
-    } else {
-      setCollapseGroupIds([...collapseGroupIds, groupId]);
-    }
-  };
-
-  const handleGroupCheckboxChange = (groupId: string, itemId: string) => {
+  const handleGroupCheckboxChange = (itemId: string) => {
     const alreadyChecked = allGroupsSelectedIds.includes(itemId);
     if (alreadyChecked) {
       setAllgroupsSelectedIds(
@@ -102,7 +88,7 @@ const Right = ({
     }
   };
 
-  const handleModeChange = (_, mode: "add" | "delete") => {
+  const handleModeChange = (x: unknown, mode: "add" | "delete") => {
     setSelectMode(mode);
   };
 
@@ -230,9 +216,7 @@ const Right = ({
                       <List key={itemId} component="div" disablePadding>
                         <ListItemButton
                           sx={{ pl: 4 }}
-                          onClick={() =>
-                            handleGroupCheckboxChange(group.id, itemId)
-                          }
+                          onClick={() => handleGroupCheckboxChange(itemId)}
                         >
                           <ListItemIcon>
                             <Checkbox

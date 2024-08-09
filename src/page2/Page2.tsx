@@ -14,7 +14,7 @@ export type CheckItemsGroupType = {
 };
 
 const Page2 = () => {
-  const [items, setItms] = useState(initItems);
+  const [items] = useState(initItems);
   const [groups, setGroups] = useState(initGroups);
   const [newGroupName, setNewGroupName] = useState("");
 

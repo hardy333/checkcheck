@@ -1,6 +1,5 @@
 import { Box, Card, CardContent, List, ListItem } from "@mui/material";
 import { Link } from "react-router-dom";
-import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 const Home = () => {
   return (
     <Box

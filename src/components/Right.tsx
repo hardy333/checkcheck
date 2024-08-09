@@ -74,7 +74,7 @@ const Right = ({
     }
   };
 
-  const handleGroupCheckboxChange = (groupId: string, itemId: string) => {
+  const handleGroupCheckboxChange = (itemId: string) => {
     const alreadyChecked = allGroupsSelectedIds.includes(itemId);
     if (alreadyChecked) {
       setAllgroupsSelectedIds(
@@ -230,9 +230,7 @@ const Right = ({
                       <List key={itemId} component="div" disablePadding>
                         <ListItemButton
                           sx={{ pl: 4 }}
-                          onClick={() =>
-                            handleGroupCheckboxChange(group.id, itemId)
-                          }
+                          onClick={() => handleGroupCheckboxChange(itemId)}
                         >
                           <ListItemIcon>
                             <Checkbox
