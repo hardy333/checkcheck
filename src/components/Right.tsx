@@ -21,20 +21,24 @@ import SubdirectoryArrowLeftIcon from "@mui/icons-material/SubdirectoryArrowLeft
 // import CommentIcon from "@mui/icons-material/Comment";
 import ExpandLess from "@mui/icons-material/ExpandLess";
 import ExpandMore from "@mui/icons-material/ExpandMore";
-import { Dispatch, useEffect, useState } from "react";
-import { CheckItemsGroupType } from "../App";
+import { Dispatch, useState } from "react";
 import { Group, Item } from "../data";
+import {
+  does_array_contains_array,
+  does_arrays_have_intersecting_elems,
+  remove_array_from_array,
+} from "../utils/methods";
 
 type Props = {
   selectMode: "add" | "delete";
   setSelectMode: Dispatch<React.SetStateAction<"add" | "delete">>;
-  makeChange: () => void;
-  checkItemGroups: {
-    groupId: string;
-    checkedChildrenIds: string[];
-    isSelectAll: boolean;
-  }[];
-  setCheckItemGroups: Dispatch<React.SetStateAction<CheckItemsGroupType[]>>;
+  makeChange: (a: string[]) => void;
+  // checkItemGroups: {
+  //   groupId: string;
+  //   checkedChildrenIds: string[];
+  //   isSelectAll: boolean;
+  // }[];
+  // setCheckItemGroups: Dispatch<React.SetStateAction<CheckItemsGroupType[]>>;
   items: Item[];
   groups: Group[];
 };
@@ -43,8 +47,8 @@ const Right = ({
   selectMode,
   setSelectMode,
   makeChange,
-  checkItemGroups,
-  setCheckItemGroups,
+  // checkItemGroups,
+  // setCheckItemGroups,
   items,
   groups,
 }: Props) => {
@@ -61,81 +65,33 @@ const Right = ({
     }
   };
 
-  const handleGroupCheckboxChange = (groupId: string, itemid: string) => {
-    const currGroup = checkItemGroups.find((g) => g.groupId === groupId);
-
-    const isChecked = currGroup
-      ? currGroup.checkedChildrenIds.includes(itemid)
-      : false;
-
-    if (isChecked) {
-      setCheckItemGroups((groups) =>
-        groups.map((g) =>
-          g.groupId !== groupId
-            ? g
-            : {
-                ...g,
-                checkedChildrenIds: g.checkedChildrenIds.filter(
-                  (id) => id !== itemid
-                ),
-              }
-        )
+  const handleGroupCheckboxChange = (groupId: string, itemId: string) => {
+    const alreadyChecked = allGroupsSelectedIds.includes(itemId);
+    if (alreadyChecked) {
+      setAllgroupsSelectedIds(
+        allGroupsSelectedIds.filter((id) => id != itemId)
       );
     } else {
-      setCheckItemGroups((groups) =>
-        groups.map((g) =>
-          g.groupId !== groupId
-            ? g
-            : { ...g, checkedChildrenIds: [...g.checkedChildrenIds, itemid] }
-        )
-      );
+      setAllgroupsSelectedIds([...allGroupsSelectedIds, itemId]);
     }
   };
 
   const handleGroupTopCheckboxChange = (groupId: string) => {
-    const g = checkItemGroups.find((g) => g.groupId === groupId);
-
-    if (g?.isSelectAll) {
-      setCheckItemGroups(
-        checkItemGroups.map((g) =>
-          g.groupId !== groupId
-            ? g
-            : {
-                ...g,
-                isSelectAll: false,
-                checkedChildrenIds: [],
-              }
-        )
-      );
+    const group = groups.find((g) => g.id === groupId) as Group;
+    const isAllChecked = does_array_contains_array(
+      allGroupsSelectedIds,
+      group?.children
+    );
+    if (isAllChecked) {
+      const res = remove_array_from_array(allGroupsSelectedIds, group.children);
+      setAllgroupsSelectedIds(res);
     } else {
-      setCheckItemGroups(
-        checkItemGroups.map((g) =>
-          g.groupId !== groupId
-            ? g
-            : {
-                ...g,
-                isSelectAll: true,
-                checkedChildrenIds:
-                  groups
-                    .find((g) => g.id === groupId)
-                    ?.children.map((id) => id) || [],
-              }
-        )
-      );
+      ///
+      const arr = [...allGroupsSelectedIds, ...group.children];
+      const res = Array.from(new Set(arr));
+      setAllgroupsSelectedIds(res);
     }
   };
-
-  useEffect(() => {
-    const arr: string[] = [];
-
-    checkItemGroups.forEach((g) => {
-      g.checkedChildrenIds.forEach((id) => {
-        arr.push(id);
-      });
-    });
-
-    setAllgroupsSelectedIds(arr);
-  }, [checkItemGroups]);
 
   console.log("ggg", allGroupsSelectedIds);
 
@@ -178,14 +134,27 @@ const Right = ({
             height: window.innerHeight - 300,
           }}
         >
+          {/* Group */}
+          {/* Group */}
           {groups.map((group) => {
-            const currCheckedItemGroup = checkItemGroups.find(
-              (g) => g.groupId === group.id
-            ) as CheckItemsGroupType;
+            /* Old */
+            // const currCheckedItemGroup = checkItemGroups.find(
+            //   (g) => g.groupId === group.id
+            // ) as CheckItemsGroupType;
 
-            const isGroupSelectAll =
-              currCheckedItemGroup.checkedChildrenIds.length ===
-              group.children.length;
+            // const isGroupSelectAll =
+            //   currCheckedItemGroup.checkedChildrenIds.length ===
+            //   group.children.length;
+            /* new */
+            const isGroupSelectAll = does_array_contains_array(
+              allGroupsSelectedIds,
+              group.children
+            );
+
+            const hasSharedIds = does_arrays_have_intersecting_elems(
+              allGroupsSelectedIds,
+              group.children
+            );
 
             return (
               <List
@@ -206,10 +175,7 @@ const Right = ({
                   }}
                 >
                   <Checkbox
-                    indeterminate={
-                      !isGroupSelectAll &&
-                      currCheckedItemGroup?.checkedChildrenIds.length > 0
-                    }
+                    indeterminate={hasSharedIds && !isGroupSelectAll}
                     checked={isGroupSelectAll}
                     onChange={() => handleGroupTopCheckboxChange(group.id)}
                   />
@@ -229,18 +195,21 @@ const Right = ({
                   </ListItemButton>
                 </Box>
 
+                {/* Item */}
+                {/* Item */}
                 <Collapse in={collapseGroupIds.includes(group.id)}>
                   {group.children.map((itemId) => {
-                    const checkedGroup = checkItemGroups.find(
-                      (checkedItemGroup) => checkedItemGroup.groupId == group.id
-                    );
+                    // const checkedGroup = checkItemGroups.find(
+                    //   (checkedItemGroup) => checkedItemGroup.groupId == group.id
+                    // );
 
-                    let isItemChecked = false;
+                    // let isItemChecked = false;
 
-                    if (checkedGroup) {
-                      isItemChecked =
-                        checkedGroup.checkedChildrenIds.includes(itemId);
-                    }
+                    // if (checkedGroup) {
+                    //   isItemChecked =
+                    //     checkedGroup.checkedChildrenIds.includes(itemId);
+                    // }
+                    const isItemChecked = allGroupsSelectedIds.includes(itemId);
 
                     return (
                       <List key={itemId} component="div" disablePadding>
@@ -276,7 +245,7 @@ const Right = ({
 
         <Stack justifyContent={"center"} mt={2}>
           <Button
-            onClick={makeChange}
+            onClick={() => makeChange(allGroupsSelectedIds)}
             variant="contained"
             color={selectMode === "add" ? "success" : "error"}
             startIcon={<SubdirectoryArrowLeftIcon />}

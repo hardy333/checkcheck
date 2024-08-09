@@ -1,10 +1,11 @@
 import { Box, Container } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Group, groups as initGroups, items as initItems } from "./data";
 import Header from "./components/Header";
 import Left from "./components/Left";
 import Right from "./components/Right";
 import { nanoid } from "nanoid";
+import { remove_array_from_array } from "./utils/methods";
 
 export type CheckItemsGroupType = {
   groupId: string;
@@ -18,69 +19,22 @@ const App = () => {
   const [newGroupName, setNewGroupName] = useState("");
 
   // Left Side Logic Start
-  // Left Side Logic Start
   const [checkedArr, setCheckedArr] = useState<string[]>([]);
   // Left Side Logic End
-  // Left Side Logic End
-
-  // Right Side Logic Start
-  // Right Side Logic Start
-  const [checkItemGroups, setCheckItemGroups] = useState<CheckItemsGroupType[]>(
-    () => {
-      return groups.map((g) => ({
-        groupId: g.id,
-        checkedChildrenIds: [],
-        isSelectAll: false,
-      }));
-    }
-  );
-  // Right Side Logic End
-  // Right Side Logic End
 
   /*  Make Changes in group */
   const [selectMode, setSelectMode] = useState<"add" | "delete">("add");
 
-  const makeChange = () => {
+  const makeChange = (idsArr: string[]) => {
     if (selectMode === "add") {
-      addSelectedChecks();
+      setCheckedArr([...idsArr]);
     } else {
-      removeSelectedChecks();
+      const res = remove_array_from_array(checkedArr, idsArr);
+      setCheckedArr(res);
     }
   };
 
-  const addSelectedChecks = () => {
-    const newArr = [...checkedArr];
-    checkItemGroups.forEach((g) => {
-      g.checkedChildrenIds.forEach((id) => {
-        newArr.push(id);
-      });
-    });
-
-    const arr = Array.from(new Set(newArr));
-    setCheckedArr(arr);
-  };
-
-  const removeSelectedChecks = () => {
-    const newArr: string[] = [];
-
-    checkedArr.forEach((checkedId) => {
-      let shouldStay = true;
-
-      checkItemGroups.forEach((g) => {
-        if (g.checkedChildrenIds.includes(checkedId)) {
-          shouldStay = false;
-        }
-      });
-
-      if (shouldStay) {
-        newArr.push(checkedId);
-      }
-    });
-
-    setCheckedArr(newArr);
-  };
-  /*  Make Changes in group */
-
+  // Finalll
   const createGroup = () => {
     const g: Group = {
       id: nanoid(),
@@ -90,18 +44,6 @@ const App = () => {
 
     setGroups([...groups, g]);
   };
-
-  console.log(groups);
-
-  useEffect(() => {
-    setCheckItemGroups(() => {
-      return groups.map((g) => ({
-        groupId: g.id,
-        checkedChildrenIds: [],
-        isSelectAll: false,
-      }));
-    });
-  }, [groups]);
 
   return (
     <Container sx={{ pb: 2 }}>
@@ -128,10 +70,8 @@ const App = () => {
         <Right
           items={items}
           groups={groups}
-          checkItemGroups={checkItemGroups}
           makeChange={makeChange}
           selectMode={selectMode}
-          setCheckItemGroups={setCheckItemGroups}
           setSelectMode={setSelectMode}
         />
       </Box>
