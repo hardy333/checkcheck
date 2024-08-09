@@ -78,6 +78,18 @@ const Home = () => {
           </CardContent>
         </Card>
       </Link>
+      <Link to="/page5">
+        <Card>
+          <CardContent>
+            <h3>V5</h3>
+            <h4>ყველზე მიინიმალისტური</h4>
+            <List>
+              <ListItem>ჯგუფების ჩამოშლა გამორთულია</ListItem>
+              <ListItem>ჯგუფბის ქვედა სია ჩანს </ListItem>
+            </List>
+          </CardContent>
+        </Card>
+      </Link>
     </Box>
   );
 };

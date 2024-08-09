@@ -7,44 +7,44 @@ export type Item = {
 
 export const items = [
   {
-    id: nanoid(),
-    name: 22,
+    id: "0",
+    name: 0,
   },
   {
-    id: nanoid(),
-    name: 233,
+    id: "1",
+    name: 1,
   },
   {
-    id: nanoid(),
-    name: 2452,
+    id: "2",
+    name: 2,
   },
   {
-    id: nanoid(),
-    name: 522,
+    id: "3",
+    name: 3,
   },
   {
-    id: nanoid(),
-    name: 52,
+    id: "4",
+    name: 4,
   },
   {
-    id: nanoid(),
-    name: 33,
+    id: "5",
+    name: 5,
   },
   {
-    id: nanoid(),
-    name: 100,
+    id: "6",
+    name: 6,
   },
   {
-    id: nanoid(),
-    name: 200,
+    id: "7",
+    name: 7,
   },
   {
-    id: nanoid(),
-    name: 300,
+    id: "8",
+    name: 8,
   },
   {
-    id: nanoid(),
-    name: 500,
+    id: "9",
+    name: 9,
   },
 ];
 
@@ -57,32 +57,37 @@ export type Group = {
 export const groups: Group[] = [
   {
     id: nanoid(),
-    name: "g1",
-    children: [items[0].id, items[1].id, items[2].id, items[3].id, items[4].id],
+    name: "ყველა",
+    children: ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10"],
   },
   {
     id: nanoid(),
-    name: "g2",
-    children: [items[0].id, items[1].id, items[8].id],
+    name: "კენტები",
+    children: ["1", "3", "5"],
   },
   {
     id: nanoid(),
-    name: "g3",
-    children: [items[5].id, items[6].id, items[7].id],
+    name: "ლუწი",
+    children: ["2", "4"],
   },
   {
     id: nanoid(),
-    name: "g4",
-    children: [items[2].id, items[3].id, items[4].id],
+    name: "5 ზე დიდი ",
+    children: ["6", "7", "8", "9"],
   },
   {
     id: nanoid(),
-    name: "g5",
-    children: [items[2].id, items[3].id, items[4].id],
+    name: "4 ზე პატარა",
+    children: ["0", "1", "2", "3"],
   },
   {
     id: nanoid(),
-    name: "g6",
-    children: [items[2].id, items[3].id, items[4].id, items[9].id, items[8].id],
+    name: "4 სადა 6-ს შორის ",
+    children: ["4", "5", "6"],
+  },
+  {
+    id: nanoid(),
+    name: "ორნიშნა",
+    children: ["10"],
   },
 ];
